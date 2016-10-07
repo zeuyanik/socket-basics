@@ -18,7 +18,8 @@ io.on('connection', function(socket){
    });
 
    socket.emit('message', {
-      text: 'Merhaba',
+      name: "admin",
+      text: 'All rights reserved by Zeynep',
       timestamp : moment.valueOf()
    })
 });
