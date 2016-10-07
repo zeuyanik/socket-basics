@@ -11,7 +11,7 @@ io.on('connection', function(socket){
 
    socket.on('message' , function(message){
       console.log('message received ' + message.text);
-      socket.broadcast.emit('message' , message);
+      io.emit('message' , message); //everyone. socket.broadcast everyone except you
    });
    socket.emit('message', {
       text: 'Welcome to chat application!'
