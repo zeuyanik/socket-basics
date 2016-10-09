@@ -5,11 +5,32 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var moment = require('moment');
 
-var clientInfo = {
-
-};
+var clientInfo = {};
 
 app.use(express.static(__dirname + "/public"));
+
+function sendCurrentUsers (socket){
+  var info  =clientInfo[socket.id];
+  var users = [];
+  if(typeof info  === "undefined"){
+    return;
+  }
+
+  Object.keys(clientInfo).forEach(function(socketId){
+    var userInfo = clientInfo[socketId];
+    if(info.room  === userInfo.room){
+      users.push(userInfo.name);
+    }
+  });
+
+  socket.emit("message",{
+    name:"System",
+    text: "Current users: " + users.join(", "),
+    timestamp: moment.valueOf()
+  })
+
+
+};
 
 io.on('connection', function(socket){
    console.log("user connected to socket.io");
@@ -39,8 +60,13 @@ io.on('connection', function(socket){
    socket.on('message' , function(message){
       console.log('message received ' + message.text);
 
-      message.timestamp = moment().valueOf();
-      io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
+      if(message.text == "@currentUsers"){
+        sendCurrentUsers(socket);
+      }else{
+        message.timestamp = moment().valueOf();
+        io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
+      }
+
    });
 
    socket.emit('message', {
