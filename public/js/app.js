@@ -3,9 +3,14 @@ var room = getQueryVariable("room");
 var socket = io();
 
 console.log( name + " wants to join to room:" + room);
+$(".room-title").text(room);
 
 socket.on("connect", function(){
     console.log("connected to socket.io");
+    socket.emit('joinRoom', {
+      name: name,
+      room: room
+    });
 });
 
 socket.on("message", function(message){
