@@ -62,6 +62,7 @@ io.on('connection', function(socket){
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else{
+         console.log(req.room);
            db.collection(req.room).insert({});
            db.close(function (err) {
              if(err) throw err;
