@@ -62,11 +62,11 @@ io.on('connection', function(socket){
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else{
-         db.collection(clientInfo[socket.id].room).insert({});
-         db.close(function (err) {
-           if(err) throw err;
-         });
-       }
+           db.collection(req.room).insert({});
+           db.close(function (err) {
+             if(err) throw err;
+           });
+         }
      });
    });
    socket.on('message' , function(message){
