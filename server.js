@@ -5,6 +5,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var moment = require('moment');
 var mongodb = require('mongodb');
+var require = require('shortid');
 
 var url = "mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf";
 var clientInfo = {};
@@ -72,7 +73,7 @@ io.on('connection', function(socket){
           if(err) throw err;
           else{
             console.log(db);
-            db.collection(clientInfo[socket.id].room).insert({ message: message, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
+            db.collection(clientInfo[socket.id].room).insert({ id: shortid.generate(), message: message.text, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
           }
         });
 
