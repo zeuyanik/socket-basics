@@ -70,6 +70,9 @@ io.on('connection', function(socket){
           if(err) throw err;
           else{
             db.collection(clientInfo[socket.id].room).insert({ id: shortid.generate(), message: message.text, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
+            db.close(function (err) {
+              if(err) throw err;
+            });
           }
         });
 
