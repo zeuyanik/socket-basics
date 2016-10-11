@@ -62,9 +62,9 @@ io.on('connection', function(socket){
      var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
-       else{
+       else if(req.room !==undefined && req.room !== null && typeof req.room === "string"){
           console.log(roomName);
-           db.collection(roomName).insert({});
+           db.collection(roomName).insert({user: req.name});
            db.close(function (err) {
              if(err) throw err;
            });
