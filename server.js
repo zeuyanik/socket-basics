@@ -5,7 +5,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var moment = require('moment');
 var mongodb = require('mongodb');
-var require = require('shortid');
+var shortid = require('shortid');
 
 var url = "mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf";
 var clientInfo = {};
