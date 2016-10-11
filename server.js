@@ -40,12 +40,11 @@ io.on('connection', function(socket){
      var userData = clientInfo[socket.id];
      if(typeof userData !== undefined){
        socket.leave(userData.room);
-       /*
        io.to(userData.room).emit('message',{
          name: 'System',
          text: userData.name + " has left",
          timestamp : moment.valueOf()
-       });*/
+       });
        delete clientInfo[socket.id];
      }
    })
@@ -53,32 +52,30 @@ io.on('connection', function(socket){
      clientInfo[socket.id] = req;
 
      socket.join(req.room);
-     /*
      socket.broadcast.to(req.room).emit("message", {
        name: "system",
        text: req.name + " has joined!",
        timestamp : moment.valueOf()
-     })*/
+     });
+
+     var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
+     mongodb.MongoClient.connect(uri, function(err, db) {
+       if(err) throw err;
+       else{
+         db.collection(clientInfo[socket.id].room).insert({}, {upsert: true});
+         db.close(function (err) {
+           if(err) throw err;
+         });
+       }
+     });
    });
    socket.on('message' , function(message){
       if(message.text == "@currentUsers"){
         sendCurrentUsers(socket);
       }else{
         message.timestamp = moment().valueOf();
-        var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
-        mongodb.MongoClient.connect(uri, function(err, db) {
-          if(err) throw err;
-          else{
-            db.collection(clientInfo[socket.id].room).insert({ id: shortid.generate(), message: message.text, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
-            db.close(function (err) {
-              if(err) throw err;
-            });
-          }
-        });
-
         io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
       }
-
    });
    /*
    socket.emit('message', {
