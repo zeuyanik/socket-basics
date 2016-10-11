@@ -4,7 +4,9 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var moment = require('moment');
+var mongodb = require('mongodb');
 
+var url = "mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf";
 var clientInfo = {};
 
 app.use(express.static(__dirname + "/public"));
@@ -64,11 +66,20 @@ io.on('connection', function(socket){
         sendCurrentUsers(socket);
       }else{
         message.timestamp = moment().valueOf();
+        var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
+
+        mongodb.MongoClient.connect(uri, function(err, db) {
+          if(err) throw err;
+          else{
+            console.log(db);
+            db.collection(clientInfo[socket.id].room).insert({ message: message, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
+          }
+        });
+
         io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
       }
 
    });
-
    socket.emit('message', {
       name: "admin",
       text: 'All rights reserved by Zeynep',
