@@ -36,8 +36,6 @@ function sendCurrentUsers (socket){
 };
 
 io.on('connection', function(socket){
-   console.log("user connected to socket.io");
-
    socket.on('disconnect', function(){
      var userData = clientInfo[socket.id];
      if(typeof userData !== undefined){
@@ -61,18 +59,14 @@ io.on('connection', function(socket){
      })
    });
    socket.on('message' , function(message){
-      console.log('message received ' + message.text);
-
       if(message.text == "@currentUsers"){
         sendCurrentUsers(socket);
       }else{
         message.timestamp = moment().valueOf();
         var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
-
         mongodb.MongoClient.connect(uri, function(err, db) {
           if(err) throw err;
           else{
-            console.log(db);
             db.collection(clientInfo[socket.id].room).insert({ id: shortid.generate(), message: message.text, user: clientInfo[socket.id].name, timestamp: moment.valueOf()}, {upsert: true});
           }
         });
