@@ -40,11 +40,12 @@ io.on('connection', function(socket){
      var userData = clientInfo[socket.id];
      if(typeof userData !== undefined){
        socket.leave(userData.room);
+       /*
        io.to(userData.room).emit('message',{
          name: 'System',
          text: userData.name + " has left",
          timestamp : moment.valueOf()
-       });
+       });*/
        delete clientInfo[socket.id];
      }
    })
@@ -52,11 +53,12 @@ io.on('connection', function(socket){
      clientInfo[socket.id] = req;
 
      socket.join(req.room);
+     /*
      socket.broadcast.to(req.room).emit("message", {
        name: "system",
        text: req.name + " has joined!",
        timestamp : moment.valueOf()
-     })
+     })*/
    });
    socket.on('message' , function(message){
       if(message.text == "@currentUsers"){
@@ -75,11 +77,12 @@ io.on('connection', function(socket){
       }
 
    });
+   /*
    socket.emit('message', {
       name: "admin",
       text: 'All rights reserved by Zeynep',
       timestamp : moment.valueOf()
-   })
+   })*/
 });
 
 http.listen(PORT, function(){
