@@ -50,7 +50,7 @@ io.on('connection', function(socket){
    })
    socket.on('joinRoom', function(req){
      clientInfo[socket.id] = req;
-
+     var roomName = req.room;
      socket.join(req.room);
      socket.broadcast.to(req.room).emit("message", {
        name: "system",
@@ -58,12 +58,13 @@ io.on('connection', function(socket){
        timestamp : moment.valueOf()
      });
 
+     console.log("hi");
      var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf';
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else{
-         console.log(req.room);
-           db.collection(req.room).insert({});
+          console.log(roomName);
+           db.collection(roomName).insert({});
            db.close(function (err) {
              if(err) throw err;
            });
