@@ -23,6 +23,9 @@ socket.on("message", function(message){
     var $messages = jQuery(".messages");
     var $message = jQuery('<li class="list-group-item"></li>');
     $("#title").text("Chat (New)");
+    if ($(document.activeElement).length >1) {
+      $("#title").text("Chat");
+    }
     $message.append('<p> <strong>' + message.name + " " + momentTimestamp.local().format("HH:mma") +'</strong></p>');
     $message.append("<p>" + message.text +'</p>')
     $messages.append($message);
