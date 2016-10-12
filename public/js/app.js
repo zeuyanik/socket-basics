@@ -22,10 +22,11 @@ socket.on("message", function(message){
     var momentTimestamp  = moment.utc(message.timestamp);
     var $messages = jQuery(".messages");
     var $message = jQuery('<li class="list-group-item"></li>');
-    $("#title").text("Chat (New)");
-    if ($(document.activeElement).length > 0) {
-      $("#title").text("Chat");
+    if(message.name !== name){
+      $("#title").text("Chat (New)");
     }
+
+
     $message.append('<p> <strong>' + message.name + " " + momentTimestamp.local().format("HH:mma") +'</strong></p>');
     $message.append("<p>" + message.text +'</p>')
     $messages.append($message);
