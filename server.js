@@ -6,9 +6,7 @@ var io = require('socket.io')(http);
 var moment = require('moment');
 var mongodb = require('mongodb');
 var shortid = require('shortid');
-
 var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf', clientInfo = {};
-
 app.use(express.static(__dirname + "/public"));
 
 function sendCurrentUsers (socket){

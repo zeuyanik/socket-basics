@@ -2,6 +2,10 @@ var name = getQueryVariable("name") || "anonymous";
 var room = getQueryVariable("room");
 var socket = io();
 
+window.onfocus = function () {
+  $("#title").text("Chat");
+};
+
 console.log( name + " wants to join to room:" + room);
 $(".room-title").text(room);
 
@@ -18,6 +22,7 @@ socket.on("message", function(message){
     var momentTimestamp  = moment.utc(message.timestamp);
     var $messages = jQuery(".messages");
     var $message = jQuery('<li class="list-group-item"></li>')
+    $("#title").text("Chat (New)");
 
     $message.append('<p> <strong>' + message.name + " " + momentTimestamp.local().format("HH:mma") +'</strong></p>');
     $message.append("<p>" + message.text +'</p>')
