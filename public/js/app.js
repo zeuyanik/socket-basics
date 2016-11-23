@@ -13,9 +13,10 @@ socket.on("connect", function(){
     console.log("connected to socket.io");
     socket.emit('joinRoom', {
       name: name,
-      room: room
+      room: room,
     });
 });
+
 
 socket.on("message", function(message){
     console.log(message.text);
@@ -26,10 +27,9 @@ socket.on("message", function(message){
       $("#title").text("Chat (New)");
     }
 
-
-    $message.append('<p> <strong>' + message.name + " " + momentTimestamp.local().format("HH:mma") +'</strong></p>');
-    $message.append("<p>" + message.text +'</p>')
-    $messages.append($message);
+    $messages.prepend($message);
+    $message.prepend("<p>" + message.text +'</p>');
+    $message.prepend('<p> <strong>' + message.name + " " + momentTimestamp.local().format("HH:mma") +'</strong></p>');
 });
 
 //handles submitting of new message

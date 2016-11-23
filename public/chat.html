@@ -9,12 +9,13 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-6 col-md-offset-3 well">
-        <a href="/index.html"> Change settings</a>
-        <h1 class="room-title">Room Name </h1>
+      
+      <!-- <div class="col-md-3 well">konusmalar</div>  -->
 
-        <ul class ="messages list-group"></ul>
-        <form id="message-form">
+      <div class="col-md-8 well">
+         <!--<a href="/index.html"> Change settings</a> -->
+        <h1 class="room-title" align="center">Room Name </h1>
+    	<form id="message-form">
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon">
@@ -23,11 +24,19 @@
               <input type="text" name="message" class="form-control"/>
             </div>
           </div>
+          <!--
           <div class ="form-group">
             <input type="submit" class="btn btn-success btn-block" />
           </div>
+          -->
         </form>
+        <ul class ="messages list-group"></ul>
       </div>
+	  <div class="col-md-4 well pre-scrollable">
+	  	Online
+	  	<ul id="online-list"></ul>
+
+	  </div>
     </div>
   </div>
 

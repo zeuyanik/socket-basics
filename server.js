@@ -29,7 +29,6 @@ function sendCurrentUsers (socket){
     timestamp: moment.valueOf()
   })
 
-
 };
 
 io.on('connection', function(socket){
@@ -43,22 +42,32 @@ io.on('connection', function(socket){
          timestamp : moment.valueOf()
        });
        delete clientInfo[socket.id];
+       mongodb.MongoClient.connect(uri, function(err, db) {
+        if(err) throw err;
+        db.collection(userData.room + "_" + "online").delete({user: userData.name});
+        db.close(function (err) {
+          if(err) throw err;
+        });
+      });
      }
    })
    socket.on('joinRoom', function(req){
      clientInfo[socket.id] = req;
      var roomName = req.room;
      socket.join(req.room);
+
      socket.broadcast.to(req.room).emit("message", {
        name: "system",
        text: req.name + " has joined!",
        timestamp : moment.valueOf()
      });
+     debugger;
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else if(req.room !==undefined && req.room !== null && typeof req.room === "string"){
           console.log(roomName);
            db.collection(roomName).insert({user: req.name});
+           db.collection(roomName + "_" + "online").insert({user: req.name , since: moment.utc( moment.valueOf().timestamp).local().format("HH:mma")});
            db.close(function (err) {
              if(err) throw err;
            });
