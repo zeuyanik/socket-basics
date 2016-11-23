@@ -42,13 +42,6 @@ io.on('connection', function(socket){
          timestamp : moment.valueOf()
        });
        delete clientInfo[socket.id];
-       mongodb.MongoClient.connect(uri, function(err, db) {
-        if(err) throw err;
-        db.collection(userData.room + "_" + "online").delete({user: userData.name});
-        db.close(function (err) {
-          if(err) throw err;
-        });
-      });
      }
    })
    socket.on('joinRoom', function(req){
@@ -62,6 +55,7 @@ io.on('connection', function(socket){
        timestamp : moment.valueOf()
      });
      debugger;
+     req.room.activeUsers.push(req.name);
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else if(req.room !==undefined && req.room !== null && typeof req.room === "string"){
@@ -73,6 +67,7 @@ io.on('connection', function(socket){
            });
          }
      });
+
    });
    socket.on('message' , function(message){
       if(message.text == "@currentUsers"){
@@ -80,6 +75,7 @@ io.on('connection', function(socket){
       }else{
         message.timestamp = moment().valueOf();
         io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
+
         mongodb.MongoClient.connect(uri, function(err, db) {
           if(err) throw err;
           else if(clientInfo[socket.id] !== undefined && clientInfo[socket.id] !== null){
@@ -88,7 +84,7 @@ io.on('connection', function(socket){
                 if(err) throw err;
             });
           }
-        });
+        }); 
       }
    });
    /*
