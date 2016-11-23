@@ -55,7 +55,6 @@ io.on('connection', function(socket){
        timestamp : moment.valueOf()
      });
      debugger;
-     req.room.activeUsers.push(req.name);
      mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else if(req.room !==undefined && req.room !== null && typeof req.room === "string"){
@@ -84,7 +83,7 @@ io.on('connection', function(socket){
                 if(err) throw err;
             });
           }
-        }); 
+        });
       }
    });
    /*
