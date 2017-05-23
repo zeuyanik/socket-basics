@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var moment = require('moment');
 var mongodb = require('mongodb');
 var shortid = require('shortid');
-var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf', clientInfo = {};
+//var uri = 'mongodb://root:1@ds035026.mlab.com:35026/heroku_9zl9s7pf', clientInfo = {};
 app.use(express.static(__dirname + "/public"));
 
 function sendCurrentUsers (socket){
@@ -55,7 +55,7 @@ io.on('connection', function(socket){
        timestamp : moment.valueOf()
      });
      debugger;
-     mongodb.MongoClient.connect(uri, function(err, db) {
+     /*mongodb.MongoClient.connect(uri, function(err, db) {
        if(err) throw err;
        else if(req.room !==undefined && req.room !== null && typeof req.room === "string"){
           console.log(roomName);
@@ -65,7 +65,7 @@ io.on('connection', function(socket){
              if(err) throw err;
            });
          }
-     });
+     });*/
 
    });
    socket.on('message' , function(message){
