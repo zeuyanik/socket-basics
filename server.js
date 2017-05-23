@@ -75,7 +75,7 @@ io.on('connection', function(socket){
         message.timestamp = moment().valueOf();
         io.to(clientInfo[socket.id].room).emit('message' , message); //everyone. socket.broadcast everyone except you
 
-        mongodb.MongoClient.connect(uri, function(err, db) {
+        /*mongodb.MongoClient.connect(uri, function(err, db) {
           if(err) throw err;
           else if(clientInfo[socket.id] !== undefined && clientInfo[socket.id] !== null){
             db.collection(clientInfo[socket.id].room).insert({user: clientInfo[socket.id].name, message: message.text, timestamp: message.timestamp});
@@ -83,7 +83,7 @@ io.on('connection', function(socket){
                 if(err) throw err;
             });
           }
-        });
+        });*/
       }
    });
    /*
